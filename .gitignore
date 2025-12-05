@@ -1,0 +1,72 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Testing
+coverage/
+*.log
+
+# Production build
+dist/
+build/
+
+# Environment files
+.env
+.env.local
+.env.production
+.env.development
+.env.test
+
+# Prisma
+prisma/dev.db
+prisma/dev.db-journal
+prisma/*.db
+prisma/*.db-journal
+*.db
+*.db-journal
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+app.log
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Replit specific
+.config/
+.upm/
+.cache/
+.replit.private
+
+# Archives
+*.tar.gz
+*.zip
+*.rar
+
+# Credentials - NUNCA COMMITAR
+CREDENCIAIS-COMPLETAS.md
+*.key
+*.pem
+.env.production.local
+secrets.json
+
+# Temporary
+*.tmp
+*.temp
+.cache/

@@ -1,0 +1,94 @@
+// Prisma Schema - Retell MVP
+// SQLite para desenvolvimento local
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Organizations (Multi-tenant)
+model Organization {
+  id        String   @id @default(uuid())
+  name      String
+  subdomain String   @unique
+  apiKey    String   @unique
+  settings  String?  // JSON
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  agents Agent[]
+  calls  Call[]
+  users  User[]
+}
+
+// Users
+model User {
+  id             String   @id @default(uuid())
+  email          String   @unique
+  name           String
+  passwordHash   String
+  role           String   // 'admin', 'manager', 'agent'
+  organizationId String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id])
+}
+
+// AI Agents
+model Agent {
+  id               String   @id @default(uuid())
+  name             String
+  type             String   // 'inbound', 'outbound', 'transfer'
+  status           String   @default("active") // 'active', 'paused', 'archived'
+  systemPrompt     String
+  firstMessage     String?
+  voiceId          String
+  llmProvider      String   @default("openai")
+  llmModel         String   @default("gpt-4")
+  temperature      Float    @default(0.7)
+  maxTokens        Int      @default(500)
+  interruptSens    Float    @default(0.5)
+  responseDelay    Int      @default(100)
+  organizationId   String
+  retellAgentId    String?  @unique
+  config           String?  // JSON adicional
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id])
+  calls        Call[]
+}
+
+// Calls
+model Call {
+  id                String    @id @default(uuid())
+  agentId           String
+  organizationId    String
+  retellCallId      String?   @unique
+  direction         String    // 'inbound', 'outbound'
+  fromNumber        String
+  toNumber          String
+  status            String    // 'initiated', 'ongoing', 'ended', 'failed'
+  startedAt         DateTime  @default(now())
+  endedAt           DateTime?
+  duration          Int?      // seconds
+  transcript        String?   // JSON array
+  recordingUrl      String?
+  disconnectReason  String?
+  metadata          String?   // JSON
+  
+  // Analytics
+  qualityScore      Float?
+  sentimentScore    Float?
+  latencyMs         Int?
+  interruptionsCount Int?
+  cost              Float?
+
+  agent        Agent        @relation(fields: [agentId], references: [id])
+  organization Organization @relation(fields: [organizationId], references: [id])
+}

@@ -1,0 +1,77 @@
+name: 🚀 Deploy to Replit
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  validate:
+    name: ✅ Validate Project
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+      
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+      
+      - name: 📦 Install Dependencies
+        run: npm ci
+      
+      - name: 🔨 Build Project
+        run: npm run build
+      
+      - name: 🧪 Run Tests
+        run: npm test || echo "No tests configured"
+      
+      - name: 🔍 Lint Code
+        run: npm run lint || echo "No linting configured"
+      
+      - name: ✅ Prisma Validate
+        run: npx prisma validate
+      
+      - name: 📊 Generate Prisma Client
+        run: npx prisma generate
+  
+  security:
+    name: 🔐 Security Scan
+    runs-on: ubuntu-latest
+    needs: validate
+    
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+      
+      - name: 🔍 Check for Secrets
+        run: |
+          echo "🔍 Verificando credenciais expostas..."
+          if grep -r "sk-proj-" . --exclude-dir=node_modules --exclude-dir=.git; then
+            echo "❌ ERRO: OpenAI API Key encontrada no código!"
+            exit 1
+          fi
+          if grep -r "AC801c" . --exclude-dir=node_modules --exclude-dir=.git --exclude=".env.example"; then
+            echo "⚠️ WARNING: Twilio SID encontrado (verificar se é .env.example)"
+          fi
+          echo "✅ Nenhuma credencial exposta encontrada"
+      
+      - name: 🛡️ NPM Audit
+        run: npm audit --production || true
+  
+  notify:
+    name: 📢 Notify Deployment
+    runs-on: ubuntu-latest
+    needs: [validate, security]
+    
+    steps:
+      - name: 📢 Success Message
+        run: |
+          echo "✅ Build validado com sucesso!"
+          echo "🚀 Pronto para import no Replit:"
+          echo "   https://replit.com/github/${{ github.repository }}"

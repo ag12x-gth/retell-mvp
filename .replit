@@ -1,0 +1,47 @@
+# Comando executado ao clicar no botão "Run"
+run = "npm start"
+
+# Arquivo de entrada (setup inicial)
+entrypoint = "setup-replit.sh"
+
+# Detectar linguagem automaticamente
+language = "nodejs-npm"
+
+# Arquivos ocultos no editor
+hidden = [".config", ".upm", "package-lock.json", "tsconfig.tsbuildinfo", "node_modules"]
+
+# Módulos Nix (Node.js 20)
+modules = ["nodejs-20"]
+
+# Configuração de deployment
+[deployment]
+run = ["sh", "-c", "npm start"]
+deploymentTarget = "cloudrun"
+
+# Packager NPM
+[packager]
+language = "nodejs-npm"
+
+[packager.features]
+packageSearch = true
+guessImports = true
+enabledForHosting = false
+
+# Porta 3000 exposta publicamente
+[[ports]]
+localPort = 3000
+externalPort = 80
+exposeLocalhost = true
+
+# Configuração Nix
+[nix]
+channel = "stable-23_11"
+
+# Variáveis de ambiente (via Secrets UI)
+[env]
+NODE_ENV = "production"
+PORT = "3000"
+
+# Configuração do Git
+[gitHubImport]
+requiredFiles = [".replit", "replit.nix", "package.json"]

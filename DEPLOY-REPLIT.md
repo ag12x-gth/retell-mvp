@@ -68,7 +68,7 @@ Adicione as seguintes variáveis (uma por vez):
 
 | Key | Value | Exemplo |
 |-----|-------|---------|
-| `TWILIO_ACCOUNT_SID` | Seu Account SID | `AC801c22459d806d9f2107f255e95ac476` |
+| `TWILIO_ACCOUNT_SID` | Seu Account SID | `ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx` |
 | `TWILIO_AUTH_TOKEN` | Seu Auth Token | `b0b2466cf01177a1152ae338f8556085` |
 | `TWILIO_PHONE_NUMBER` | Seu número Twilio | `+553322980007` |
 | `TWILIO_API_KEY` | Sua API Key | `SKa55f97ec46ae4f399102fb5f9c2b649` |

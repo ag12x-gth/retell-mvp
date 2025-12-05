@@ -45,7 +45,7 @@ Após o import, o Replit detecta automaticamente:
 
 ```env
 # TWILIO (https://console.twilio.com)
-TWILIO_ACCOUNT_SID=AC801c22459d806d9f2107f255e95ac476
+TWILIO_ACCOUNT_SID=ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 TWILIO_AUTH_TOKEN=b0b2466cf01177a1152ae338f8556085
 TWILIO_PHONE_NUMBER=+553322980007
 TWILIO_API_KEY=SKa55f97ec46ae4f399102fb5f9c2b649
@@ -196,7 +196,7 @@ retell-mvp/
 
 ### **Twilio**
 - 📞 **Número**: `+55 33 2298-0007`
-- 🆔 **Account SID**: `AC801c22459d806d9f2107f255e95ac476`
+- 🆔 **Account SID**: `ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`
 - 🔐 **Dashboard**: https://console.twilio.com
 
 ### **Retell.ai**
